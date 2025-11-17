@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Specter Hub</title>
+  <meta name="description" content="Fictional, cosmetic demo landing page with ultra-modern charcoal UI, animations, fake stats and testimonials." />
+  <style>
+    :root{
+      --bg:#0b0b0c; --card:#0f1113; --muted:#9aa0ab; --accent1:linear-gradient(90deg,#6f93ff,#9fb2ff);
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;text-rendering:optimizeLegibility}
+    body{background:radial-gradient(1200px 600px at 10% 10%, rgba(111,147,255,.05), transparent), var(--bg); color:#e6e9ee; overflow-x:hidden}
+
+    /* Page transition */
+    .page-enter{opacity:0;transform:translateY(6px)}
+    .page-enter-active{animation:enter .6s cubic-bezier(.2,.9,.25,1) forwards}
+    @keyframes enter{to{opacity:1;transform:none}}
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 36px;backdrop-filter: blur(6px);position:sticky;top:0;z-index:40}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo svg{width:44px;height:44px}
+    .brand{font-weight:700;font-size:1.2rem;letter-spacing:.6px;background:var(--accent1);-webkit-background-clip:text;color:transparent}
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-weight:600}
+    nav a:hover{color:#fff}
+
+    /* Custom cursor */
+    .cursor{position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);z-index:9999;mix-blend-mode:screen;background:linear-gradient(180deg,#fff,#cbd5ff);box-shadow:0 6px 18px rgba(106,117,255,.12)}
+
+    /* Hero */
+    .hero{padding:100px 24px 64px;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center}
+    .hero-left h1{font-size:3.2rem;margin:0 0 12px;line-height:1.02}
+    .sub{color:var(--muted);font-size:1.05rem;margin-bottom:20px}
+
+    .cta-row{display:flex;gap:14px;align-items:center}
+    .btn{padding:12px 20px;border-radius:12px;border:none;font-weight:700;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,#5b6bff,#3ac7ff);color:#071129;box-shadow:0 8px 30px rgba(64,82,255,.12)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.04);color:var(--muted)}
+
+    /* Glass card */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 30px rgba(3,4,7,0.6)}
+
+    /* Counter + stats */
+    .stats{display:flex;gap:18px;align-items:center}
+    .stat{min-width:120px}
+    .stat .num{font-size:1.6rem;font-weight:800;background:var(--accent1);-webkit-background-clip:text;color:transparent}
+    .muted{color:var(--muted);font-weight:600}
+
+    /* Right panel - Mock console + download */
+    .side-panel{display:flex;flex-direction:column;gap:18px}
+    .console{background:#060608;padding:14px;border-radius:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#cfe0ff;font-size:13px;line-height:1.5;min-height:160px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+    .console .line{opacity:0;transform:translateY(6px);animation:type .6s forwards}
+    @keyframes type{to{opacity:1;transform:none}}
+
+    .download-box{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:10px}
+    .progress{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#6f93ff,#3ac7ff);border-radius:8px;transition:width 900ms cubic-bezier(.2,.9,.25,1)}
+    .download-meta{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted)}
+
+    /* Testimonials */
+    .testimonials{padding:60px 24px;max-width:1200px;margin:0 auto}
+    .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .testimonial{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.02)}
+    .t-head{display:flex;align-items:center;gap:12px}
+    .t-head img{width:48px;height:48px;border-radius:50%}
+    .t-name{font-weight:800}
+    .t-role{color:var(--muted);font-size:.88rem}
+    .t-quote{margin-top:10px;color:#dfe7ff}
+
+    /* Footer */
+    footer{padding:26px 24px;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)}
+
+    /* Responsive */
+    @media (max-width:980px){.hero{grid-template-columns:1fr;}.test-grid{grid-template-columns:1fr}.side-panel{order:2}}
+  </style>
+</head>
+<body class="page-enter page-enter-active">
+  <div class="cursor" id="cursor"></div>
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <rect width="64" height="64" rx="12" fill="#0f1113" />
+        <path d="M16 36c8-10 24-12 32-4v12c-10-8-22-6-32 4V36z" fill="url(#g)" />
+        <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#6f93ff"/><stop offset="1" stop-color="#3ac7ff"/></linearGradient></defs>
+      </svg>
+      <div class="brand">NovaBoost X</div>
+    </div>
+    <nav>
+      <a href="#stats">Stats</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero-left">
+      <h1 class="text-4xl font-bold text-white mb-4">Specter Hub</h1>
+      <div class="sub">Charcoal design, animated gradients, glass cards, and playful micro-interactions. Fictional product — no real functionality.</div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="stats">
+          <div class="stat">
+            <div class="num" id="servedCounter">15,102</div>
+            <div class="muted">Customers Served</div>
+          </div>
+          <div class="stat">
+            <div class="num">99.99%</div>
+            <div class="muted">Fictional Uptime</div>
+          </div>
+          <div class="stat">
+            <div class="num">2025</div>
+            <div class="muted">Design Year</div>
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="cta-row"><button class="btn btn-primary" id="downloadBtn">Mock Download</button><button class="btn btn-ghost">Try Demo</button></div>
+      </div>
+
+      <section id="about" style="margin-top:26px">
+        <h3 style="margin:0 0 12px">What this contains</h3>
+        <p class="muted">Animated header, fake server counter that increments every 15s, a faux console with typing animation, a simulated download progress bar, polished testimonials with AI avatars, subtle page transitions and a custom cursor.</p>
+      </section>
+    </div>
+
+    <aside class="side-panel">
+      <div class="card">
+        <div class="console" id="console">
+          <!-- Typed lines injected by JS -->
+        </div>
+      </div>
+
+      <div class="download-box card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:800">NovaBoost X Installer (Mock)</div>
+            <div class="muted" style="font-size:.9rem">Size: 12.4 MB • Verified (Fictional)</div>
+          </div>
+          <div class="muted" style="font-size:.85rem">v1.0-demo</div>
+        </div>
+        <div class="progress"><i id="progressBar"></i></div>
+        <div class="download-meta"><div id="progressText">Idle</div><div class="muted">Secure • Mock</div></div>
+      </div>
+    </aside>
+  </main>
+
+  <section id="testimonials" class="testimonials">
+    <h2 style="text-align:center;margin-bottom:18px">Customer Testimonials</h2>
+    <div class="test-grid">
+      <div class="testimonial">
+        <div class="t-head"><img src="https://i.pravatar.cc/100?img=12" alt="avatar"/><div>
+          <div class="t-name">Alex R.</div>
+          <div class="t-role">Beta Viewer</div>
+        </div></div>
+        <div class="t-quote">“Sleek animations and premium-feeling dark UI. Even the mock console looks legit.”</div>
+      </div>
+
+      <div class="testimonial">
+        <div class="t-head"><img src="https://i.pravatar.cc/100?img=48" alt="avatar"/><div>
+          <div class="t-name">Morgan K.</div>
+          <div class="t-role">Designer</div>
+        </div></div>
+        <div class="t-quote">“Glassmorphism + charcoal tones — perfect combo. Great job on micro-interactions.”</div>
+      </div>
+
+      <div class="testimonial">
+        <div class="t-head"><img src="https://i.pravatar.cc/100?img=7" alt="avatar"/><div>
+          <div class="t-name">Jay T.</div>
+          <div class="t-role">Frontend Enthusiast</div>
+        </div></div>
+        <div class="t-quote">“Could pass as a startup landing page. Love the fake progress and typing animation.”</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2025 NovaBoost X — Fictional Demo Only • Built for design stunts</footer>
+
+  <script>
+  const testimonialNames = ["Jason Meyers","Olivia Hart","Marcus Delgado","Ethan Crowley","Sarah Nguyen","Liam Porter","Daniel Kim","Amelia Rhodes","Tyler Santos","Jordan Alvarez","Ava Morgan","Chloe Bennett","Noah Castillo","Logan Ward","Brianna Cole","Jacob Ramirez","Max Donovan","Lily Christensen","Hunter Blake","Emma Douglas","Adrian Parker","Jasmine Patel","Carter Willis","Sofia Marquez","Wyatt Collins","Nora Thompson","Isaac Greene","Maya Clarkson","Owen Sanders","Gianna Russo","Xavier Brooks","Harper Ellison","Cole Matthews","Peyton Fisher","Dominic Hale","Stella Freeman","Ryan Bishop","Lila Becker","Ashton Cruz","Faith Walsh","Tristan Hale","Natalie Pierce","Mason Doyle","Kaitlyn Rivera","Julian Scott","Penelope Ortiz","Ryder Mitchell","Mia Patterson","Caleb Boone","Vanessa Carter"];
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+
+    // Served counter increments every 15s
+    let served = 15102;
+    setInterval(()=>{ served++; document.getElementById('servedCounter').textContent = served.toLocaleString(); }, 15000);
+
+    // Faux console typing
+    const consoleEl = document.getElementById('console');
+    const lines = [
+      'Initializing NovaBoost X v1.0-demo...',
+      'Loading assets... [OK] (mock)',
+      'Connecting to fictional telemetry...',
+      'Auth: guest-session (read-only)',
+      'Ready. Want to simulate a download?'
+    ];
+    let li = 0;
+    function typeLine(text, delay=30){
+      const line = document.createElement('div'); line.className='line'; consoleEl.appendChild(line);
+      let i=0; const t = setInterval(()=>{ line.textContent += text[i++] || ''; if(i>text.length){ clearInterval(t); li++; if(li<lines.length) setTimeout(()=>typeLine(lines[li]),400); } }, delay);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+    // start typing after small delay
+    setTimeout(()=>typeLine(lines[0]),600);
+
+    // Mock download progress
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const downloadBtn = document.getElementById('downloadBtn');
+    let downloading=false;
+    downloadBtn.addEventListener('click', ()=>{
+      if(downloading) return;
+      downloading=true; progressText.textContent='Preparing...';
+      let pct=0; progressBar.style.width='0%';
+      const id = setInterval(()=>{
+        pct += Math.floor(Math.random()*12)+6; if(pct>100) pct=100;
+        progressBar.style.width = pct + '%'; progressText.textContent = pct+'%';
+        if(pct>=100){ clearInterval(id); progressText.textContent='Completed'; setTimeout(()=>{ progressBar.style.width='0%'; progressText.textContent='Idle'; downloading=false; }, 2000); }
+      }, 700 + Math.random()*700);
+    });
+
+    // Small entrance animation for testimonial cards
+    document.querySelectorAll('.testimonial').forEach((el,i)=>{ el.style.opacity=0; el.style.transform='translateY(10px)'; setTimeout(()=>{ el.style.transition='all .6s cubic-bezier(.2,.9,.25,1)'; el.style.opacity=1; el.style.transform='none'; }, 650 + i*120); });
+
+    // Accessibility: reduce motion if requested
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.matches){ document.querySelectorAll('.page-enter').forEach(e=>e.style.animation='none'); }
+  </script>
+</body>
+</html>
